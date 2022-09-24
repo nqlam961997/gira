@@ -1,5 +1,7 @@
 package dev.lam.gira.role.boundary;
 
+import dev.lam.gira.common.util.ResponseUtils;
+import dev.lam.gira.role.dto.RoleDTO;
 import dev.lam.gira.role.model.Role;
 import dev.lam.gira.role.service.RoleService;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,18 @@ public class RoleRestResource {
     }
 
     @GetMapping
-    public ResponseEntity<Object> findAll() {
-        return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
+    public Object findAll() {
+        return ResponseUtils.get(
+                roleService.findAllDTO(RoleDTO.class),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody Role role) {
-        return new ResponseEntity<>(roleService.save(role), HttpStatus.CREATED);
+    public Object save(@RequestBody Role role) {
+        return ResponseUtils.get(
+                roleService.save(role),
+                HttpStatus.CREATED
+        );
     }
 }

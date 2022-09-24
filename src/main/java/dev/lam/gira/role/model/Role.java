@@ -25,4 +25,12 @@ public class Role extends BaseEntity {
 
     @Column(name = RoleEntity.Role.CODE)
     private String code;
+
+    @Override
+    public boolean equals(Object obj) {
+        Role role = (Role) obj;
+        return super.equals(obj)
+                && role.name.equals(name)
+                && role.code.equals(code);
+    }
 }

@@ -1,43 +1,41 @@
 package dev.lam.gira.role.service;
 
+import dev.lam.gira.common.service.GenericService;
+import dev.lam.gira.role.dto.RoleDTO;
 import dev.lam.gira.role.model.Role;
 import dev.lam.gira.role.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.UUID;
 
-public interface RoleService {
-    List<Role> findAll();
-
-    Role save(Role role);
+public interface RoleService extends GenericService<Role, RoleDTO, UUID> {
 
     Role update(Role role, String code);
-
-    void delete(String code);
 }
 
 @Service
 @Transactional
 class RoleServiceImpl implements RoleService {
 
-
     private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
 
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, ModelMapper modelMapper) {
         this.roleRepository = roleRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Role> findAll() {
-        return roleRepository.findAll();
+    public JpaRepository<Role, UUID> getRepository() {
+        return this.roleRepository;
     }
 
     @Override
-    public Role save(Role role) {
-        return roleRepository.save(role);
+    public ModelMapper getModelMapper() {
+        return this.modelMapper;
     }
 
     @Override
@@ -48,8 +46,4 @@ class RoleServiceImpl implements RoleService {
         return roleRepository.save(currentRole);
     }
 
-    @Override
-    public void delete(String code) {
-        roleRepository.deleteByCode(code);
-    }
 }
