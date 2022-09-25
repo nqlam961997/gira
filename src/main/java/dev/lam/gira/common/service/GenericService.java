@@ -32,8 +32,11 @@ public interface GenericService <T extends BaseEntity, D, I> {
                 .collect(Collectors.toList());
     }
 
-    default T save(T entity) {
-        return getRepository().save(entity);
+    default List<D> findAllDTO(Pageable pageable, Class<D> clazz) {
+        return getRepository().findAll(pageable)
+                .stream()
+                .map(entity -> getModelMapper().map(entity, clazz))
+                .collect(Collectors.toList());
     }
 
     default void deleteById(I id) {

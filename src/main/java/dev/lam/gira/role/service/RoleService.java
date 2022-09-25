@@ -14,6 +14,8 @@ import java.util.UUID;
 public interface RoleService extends GenericService<Role, RoleDTO, UUID> {
 
     Role update(Role role, String code);
+
+    RoleDTO save(RoleDTO roleDTO);
 }
 
 @Service
@@ -36,6 +38,13 @@ class RoleServiceImpl implements RoleService {
     @Override
     public ModelMapper getModelMapper() {
         return this.modelMapper;
+    }
+
+    @Override
+    public RoleDTO save(RoleDTO roleDTO) {
+        Role role = getModelMapper().map(roleDTO, Role.class);
+        Role savedModel = getRepository().save(role);
+        return getModelMapper().map(savedModel, RoleDTO.class);
     }
 
     @Override

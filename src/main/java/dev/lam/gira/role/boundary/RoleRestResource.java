@@ -4,9 +4,12 @@ import dev.lam.gira.common.util.ResponseUtils;
 import dev.lam.gira.role.dto.RoleDTO;
 import dev.lam.gira.role.model.Role;
 import dev.lam.gira.role.service.RoleService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/roles")
@@ -25,10 +28,18 @@ public class RoleRestResource {
         );
     }
 
-    @PostMapping
-    public Object save(@RequestBody Role role) {
+    @GetMapping("/paging")
+    public Object findAllDTOPaging(@RequestParam("size") int size, @RequestParam("index") int index) {
         return ResponseUtils.get(
-                roleService.save(role),
+                roleService.findAllDTO(Pageable.ofSize(size).withPage(index), RoleDTO.class),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping
+    public Object save(@RequestBody @Valid RoleDTO roleDTO) {
+        return ResponseUtils.get(
+                roleService.save(roleDTO),
                 HttpStatus.CREATED
         );
     }
