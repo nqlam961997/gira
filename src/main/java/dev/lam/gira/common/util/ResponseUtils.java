@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
+import java.util.List;
 
 @UtilityClass
 public class ResponseUtils {
@@ -20,6 +21,19 @@ public class ResponseUtils {
                 .timestamp(DateTimeUtils.now())
                 .status(status.value())
                 .build()
+                , status);
+    }
+
+    public static ResponseEntity<ResponseDTO> getError(List<String> result, HttpStatus status) {
+        return new ResponseEntity<>(
+                ResponseDTO
+                        .builder()
+                        .content(null)
+                        .hasError(true)
+                        .errors(result)
+                        .timestamp(DateTimeUtils.now())
+                        .status(status.value())
+                        .build()
                 , status);
     }
 }
