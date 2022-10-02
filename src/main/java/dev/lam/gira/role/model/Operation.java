@@ -19,37 +19,31 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = RoleEntity.Role.TABLE_NAME)
-public class Role extends BaseEntity {
-    @Column(name = RoleEntity.Role.NAME)
+@Table(name = RoleEntity.Operation.TABLE_NAME)
+public class Operation extends BaseEntity {
+    @Column(name = RoleEntity.Operation.NAME)
     @Size(min = 5, max = 100, message = "Name must have length between {min} - {max} characters")
     private String name;
 
-    @Column(name = RoleEntity.Role.DESCRIPTION)
+    @Column(name = RoleEntity.Operation.DESCRIPTION)
     @NotBlank(message = "Description must not be blank")
     private String description;
 
-    @Column(name = RoleEntity.Role.CODE)
+    @Column(name = RoleEntity.Operation.CODE)
     @Size(min = 3, max = 10, message = "Code must have length between {min} - {max} characters")
     private String code;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = RoleEntity.RoleMappedService.JOIN_TABLE,
-            joinColumns = @JoinColumn(name = RoleEntity.RoleMappedService.JOIN_TABLE_ROLE_ID),
-            inverseJoinColumns =  @JoinColumn(name = RoleEntity.RoleMappedService.JOIN_TABLE_SERVICE_ID)
-    )
-    private Set<Operation> operations = new LinkedHashSet<>();
+    @Column(name = RoleEntity.Operation.TYPE, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    public void removeOperation(Operation operation) {
-        this.operations.remove(operation);
-        operation.getRoles().remove(this);
-    }
+    @ManyToMany(mappedBy = RoleEntity.RoleMappedService.SERVICE_MAPPED_ROLE)
+    private Set<Role> roles = new LinkedHashSet<>();
 
-    public Role addOperation(Operation operation) {
-        this.operations.add(operation);
-        operation.getRoles().add(this);
-        return this;
+    public enum Type {
+        SAVE_OR_UPDATE,
+        FETCH,
+        REMOVE
     }
 
     @Override
@@ -67,8 +61,8 @@ public class Role extends BaseEntity {
             return false;
         }
 
-        Role role = (Role) obj;
+        Operation service = (Operation) obj;
 
-        return this.id != null && Objects.equals(this.id, role.getId());
+        return this.id != null && Objects.equals(this.id, service.getId());
     }
 }

@@ -17,12 +17,12 @@ public class ValidationConfig {
         return messageSource;
     }
 
-    @Bean
-    public LocalValidatorFactoryBean getValidator(){
-        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-
-        validator.setValidationMessageSource(messageSource());
-
-        return validator;
-    }
+//    @Bean
+//    public LocalValidatorFactoryBean getValidator(){
+//        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+//
+//        validator.setValidationMessageSource(messageSource());
+//
+//        return validator;
+//    }
 }
