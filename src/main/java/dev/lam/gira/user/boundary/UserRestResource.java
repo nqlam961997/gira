@@ -2,7 +2,6 @@ package dev.lam.gira.user.boundary;
 
 import dev.lam.gira.common.util.ResponseUtils;
 import dev.lam.gira.user.dto.UserDTO;
-import dev.lam.gira.user.model.User;
 import dev.lam.gira.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserRestResource {
 
     @Autowired
@@ -37,7 +36,7 @@ public class UserRestResource {
     @PostMapping
     public Object save(@RequestBody @Valid UserDTO userDTO) {
         return ResponseUtils.get(
-                userService.save(userDTO, User.class, UserDTO.class),
+                userService.createUser(userDTO),
                 HttpStatus.CREATED
         );
     }

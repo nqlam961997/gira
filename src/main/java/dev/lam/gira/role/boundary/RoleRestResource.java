@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/roles")
+@RequestMapping(value = "api/v1/roles")
 public class RoleRestResource {
     private final RoleService roleService;
 
@@ -29,7 +29,7 @@ public class RoleRestResource {
         );
     }
 
-    @GetMapping("/paging")
+    @GetMapping("paging")
     public Object findAllDTOPaging(@RequestParam("size") int size, @RequestParam("index") int index) {
         return ResponseUtils.get(
                 roleService.findAllDTO(Pageable.ofSize(size).withPage(index), RoleDTO.class),

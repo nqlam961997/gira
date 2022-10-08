@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/operation")
+@RequestMapping("api/v1/operation")
 public class OperationRestResource {
 
     @Autowired

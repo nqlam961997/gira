@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user-groups")
+@RequestMapping("api/v1/user-groups")
 public class UserGroupRestResource {
 
     @Autowired
